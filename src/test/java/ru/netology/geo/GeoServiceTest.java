@@ -25,15 +25,45 @@ public class GeoServiceTest {
             expected =  new Location("Moscow", Country.RUSSIA, null, 0);
         } else if (ip.startsWith("96.")) {
             expected =  new Location("New York", Country.USA, null,  0);
+        } else {
+            expected = null;
         }
 
         Location result = geoService.byIp(ip);
 
         //assert
-        Assertions.assertEquals(
-                expected.getCountry() + "_" + expected.getCity() + "_" + expected.getBuiling(),
-                result.getCountry() + "_" + result.getCity() + "_" + result.getBuiling()
-        );
+        Assertions.assertEquals(locationToString(expected), locationToString(result));
+    }
+
+    @Test
+    public void testByRussiaIp() {
+        System.out.println("Geo service - byRussiaIp test");
+
+        // arrange
+        String ip = "172.123.12.19";
+
+        Location expected =  new Location("Moscow", Country.RUSSIA, null, 0);
+        Location result = geoService.byIp(ip);
+
+        Assertions.assertEquals(locationToString(expected), locationToString(result));
+    }
+
+    @Test
+    public void testByUsaIp() {
+        System.out.println("Geo service - byUsaIp test");
+
+        // arrange
+        String ip = "96.12.33.82";
+
+        Location expected =  new Location("New York", Country.USA, null, 0);
+        Location result = geoService.byIp(ip);
+
+        Assertions.assertEquals(locationToString(expected), locationToString(result));
+    }
+
+    private String locationToString(Location location) {
+        String result = location.getCountry() + "_" + location.getCity() + "_" + location.getStreet() + "_" + location.getBuiling();
+        return result;
     }
 
     @Test
